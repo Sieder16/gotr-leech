@@ -8,11 +8,12 @@ import net.runelite.client.config.ConfigItem;
 public interface GotrLeechConfig extends Config {
 
     @ConfigItem(
-            keyName = "greeting",
-            name = "Welcome Greeting",
-            description = "The message to show to the user when they login"
+            keyName = "notifyOnStart",
+            name = "Notify on game start",
+            description = "Send a notification when a new game starts",
+            position = 0
     )
-    default String greeting() {
-        return "Hello";
+    default boolean notifyOnStart() {
+        return true;
     }
 }
