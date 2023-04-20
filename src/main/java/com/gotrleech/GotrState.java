@@ -19,7 +19,7 @@ import javax.inject.Singleton;
 @Slf4j
 @Singleton
 @RequiredArgsConstructor(onConstructor_ = @Inject)
-public class GotrState {
+public class GotrState extends EventHandler {
 
     private static final int GOTR_WIDGET_GROUP_ID = 746;
     private static final int GOTR_WIDGET_CHILD_GAME_ID = 1;
@@ -27,7 +27,7 @@ public class GotrState {
     public enum State {
         START("Creatures from the Abyss will attack in"),
         END("The Great Guardian successfully closed the rift"),
-        FAILED("gotr failed"),
+        FAILED("The Great Guardian was defeated"),
         SIXTY_PERCENT("The rift burns intensely"),
         ;
 
@@ -39,23 +39,21 @@ public class GotrState {
         }
     }
 
-    private final Client client;
-    private final EventBus eventBus;
-
     @Getter
     private boolean inGame;
 
-    public void startUp() {
-        clearState();
-        eventBus.register(this);
-    }
+//    public void startUp() {
+//        clearState();
+//        eventBus.register(this);
+//    }
+//
+//    public void shutDown() {
+//        eventBus.unregister(this);
+//        clearState();
+//    }
 
-    public void shutDown() {
-        eventBus.unregister(this);
-        clearState();
-    }
-
-    private void clearState() {
+    @Override
+    protected void cleanup() {
         inGame = false;
     }
 
