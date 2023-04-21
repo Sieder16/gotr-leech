@@ -1,15 +1,13 @@
 package com.gotrleech;
 
-import com.gotrleech.event.GotrStateChanged;
+import com.gotrleech.event.GotrGameStateChanged;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
-import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameTick;
-import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.util.Text;
 
@@ -19,7 +17,7 @@ import javax.inject.Singleton;
 @Slf4j
 @Singleton
 @RequiredArgsConstructor(onConstructor_ = @Inject)
-public class GotrState extends EventHandler {
+public class GotrGameState extends EventHandler {
 
     private static final int GOTR_WIDGET_GROUP_ID = 746;
     private static final int GOTR_WIDGET_CHILD_GAME_ID = 1;
@@ -42,16 +40,6 @@ public class GotrState extends EventHandler {
     @Getter
     private boolean inGame;
 
-//    public void startUp() {
-//        clearState();
-//        eventBus.register(this);
-//    }
-//
-//    public void shutDown() {
-//        eventBus.unregister(this);
-//        clearState();
-//    }
-
     @Override
     protected void cleanup() {
         inGame = false;
@@ -73,11 +61,9 @@ public class GotrState extends EventHandler {
         String message = Text.removeTags(event.getMessage());
         if (message == null) return;
 
-        log.debug("Game Message: {}", message);
-
         for (State state : State.values()) {
             if (message.startsWith(state.getGameMessage())) {
-                eventBus.post(new GotrStateChanged(state));
+                eventBus.post(new GotrGameStateChanged(state));
                 return;
             }
         }

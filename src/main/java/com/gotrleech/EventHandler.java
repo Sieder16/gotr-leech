@@ -5,6 +5,9 @@ import net.runelite.client.eventbus.EventBus;
 
 import javax.inject.Inject;
 
+/**
+ * Base class for any class that should listen for events
+ */
 public abstract class EventHandler {
 
     @Inject
@@ -22,5 +25,8 @@ public abstract class EventHandler {
         cleanup();
     }
 
+    /**
+     * Called during startup and shutdown, to allow subclasses to cleanup/reset any state.
+     */
     protected abstract void cleanup();
 }

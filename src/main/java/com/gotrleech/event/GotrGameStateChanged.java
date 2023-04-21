@@ -1,13 +1,13 @@
 package com.gotrleech.event;
 
-import com.gotrleech.GotrState;
+import com.gotrleech.GotrGameState;
 import lombok.Value;
 
 /**
  * An event denoting that the GotR game state has changed.
  */
 @Value
-public class GotrStateChanged {
+public class GotrGameStateChanged {
 
-    GotrState.State state;
+    GotrGameState.State state;
 }

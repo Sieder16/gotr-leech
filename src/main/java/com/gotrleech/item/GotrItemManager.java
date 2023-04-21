@@ -2,7 +2,7 @@ package com.gotrleech.item;
 
 import com.google.common.collect.ImmutableList;
 import com.gotrleech.EventHandler;
-import com.gotrleech.GotrState;
+import com.gotrleech.GotrGameState;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.InventoryID;
@@ -17,6 +17,9 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+/**
+ * Tracks items for the player like how many of them they have in their inventory/equipment containers
+ */
 @Slf4j
 @Singleton
 public class GotrItemManager extends EventHandler {
@@ -40,27 +43,24 @@ public class GotrItemManager extends EventHandler {
             .flatMap(Collection::stream)
             .collect(Collectors.toSet());
 
-    private final GotrState gotrState;
+    private final GotrGameState gotrGameState;
 
     @Inject
-    public GotrItemManager(GotrState gotrState) {
-        this.gotrState = gotrState;
+    public GotrItemManager(GotrGameState gotrGameState) {
+        this.gotrGameState = gotrGameState;
     }
 
     @Override
     protected void cleanup() {
-        trackedItems.forEach(GotrItem::cleanup);
+        trackedItems.forEach(item -> item.recalculate(client));
     }
 
     @Subscribe
-    public void onItemContainerChanged(ItemContainerChanged e) {
-//        if (!gotrState.isInGame()) return; TODO: Uncomment
-        if (!trackedContainerIds.contains(e.getContainerId())) return;
-
-        log.debug("Item container changed: {}", e);
+    public void onItemContainerChanged(ItemContainerChanged event) {
+        if (!trackedContainerIds.contains(event.getContainerId())) return;
 
         for (GotrItem gotrItem : trackedItems) {
-            if (gotrItem.getContainerIds().contains(e.getContainerId())) {
+            if (gotrItem.getContainerIds().contains(event.getContainerId())) {
                 gotrItem.recalculate(client);
             }
         }
