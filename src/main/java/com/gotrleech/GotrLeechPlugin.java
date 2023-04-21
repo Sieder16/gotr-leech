@@ -63,8 +63,6 @@ public class GotrLeechPlugin extends Plugin {
         });
 
         overlayManager.add(overlayPanel);
-
-        // TODO: Deposit pool hide entry
     }
 
     @Override
@@ -76,13 +74,6 @@ public class GotrLeechPlugin extends Plugin {
             gotrPlayerState.shutdown();
             gotrGameState.shutdown();
         });
-    }
-
-    // Run last
-    @Subscribe(priority = -1)
-    public void onGameTick(GameTick event) {
-        if (!gotrGameState.isInGame()) return;
-        // TODO: Needed?
     }
 
     @Subscribe
