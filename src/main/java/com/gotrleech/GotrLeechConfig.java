@@ -73,4 +73,15 @@ public interface GotrLeechConfig extends Config {
     default int minUnchargedCellsRequired() {
         return 1;
     }
+
+    @ConfigItem(
+            keyName = "highPointRequirement",
+            name = "300 point requirement",
+            description = "If enabled, the plugin will require 300 points instead of 150",
+            position = 6
+    )
+    default boolean highPointRequirement() {
+        return false;
+    }
+
 }

@@ -58,7 +58,8 @@ public class GotrOverlayPanel extends OverlayPanel {
 
         renderBool(gotrPlayerState.isMining(), "Is Mining");
 
-        renderInt(gotrPlayerState.getTotalEnergy(), "Total Energy", GotrLeechPlugin.ENERGY_REQUIRED);
+        int requiredEnergy = config.highPointRequirement() ? 300 : 150;
+        renderInt(gotrPlayerState.getTotalEnergy(), "Total Energy", requiredEnergy);
         panelComponent.getChildren().add(LineComponent.builder().build());
 
         if (config.minBindingNecklaceChargesRequired() > 0) {

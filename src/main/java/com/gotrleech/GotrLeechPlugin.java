@@ -23,7 +23,6 @@ import javax.inject.Inject;
 )
 public class GotrLeechPlugin extends Plugin {
 
-    public static final int ENERGY_REQUIRED = 150; // 150 energy required to qualify for points/xp
     static final String CONFIG_GROUP = "gotrLeech";
 
     @Inject
@@ -123,7 +122,8 @@ public class GotrLeechPlugin extends Plugin {
     private void sixtyPercent() {
         if (!config.notifyOnSixtyPercentMessage()) return;
 
-        int pointsToQualify = ENERGY_REQUIRED - gotrPlayerState.getTotalEnergy();
+        int requiredEnergy = config.highPointRequirement() ? 300 : 150;
+        int pointsToQualify = requiredEnergy - gotrPlayerState.getTotalEnergy();
         if (pointsToQualify > 0) {
             notifier.notify("You still need " + pointsToQualify + " more points to qualify for GotR rewards!");
             return;
